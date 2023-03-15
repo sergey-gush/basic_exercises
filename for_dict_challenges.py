@@ -1,3 +1,5 @@
+from collections import Counter
+
 # Задание 1
 # Дан список учеников, нужно посчитать количество повторений каждого имени ученика
 # Пример вывода:
@@ -12,7 +14,20 @@ students = [
     {'first_name': 'Маша'},
     {'first_name': 'Петя'},
 ]
-# ???
+
+name_count = Counter(student['first_name'] for student in students)
+
+for name in name_count:
+    print(f'{name}: {name_count[name]}') 
+
+"""
+counter = {}
+
+for person in students:
+    if person['first name'] not in counter:
+        counter[person['first name']] = 0
+    counter[person['first name']] += 1
+"""
 
 
 # Задание 2
@@ -27,6 +42,12 @@ students = [
     {'first_name': 'Оля'},
 ]
 # ???
+
+name_count = Counter(student['first_name'] for student in students)
+
+most_common_name = name_count.most_common(1)
+
+print(f'Самое частое имя среди учеников: {most_common_name[0][0]}')
 
 
 # Задание 3
@@ -53,6 +74,15 @@ school_students = [
 ]
 # ???
 
+grade_count = 0
+
+for grade in school_students:
+    grade_count += 1
+    name_count = Counter(student['first_name'] for student in grade)
+    most_common_name = name_count.most_common(1)
+    print(f'Самое частое имя в классе {grade_count}: {most_common_name[0][0]}')
+
+
 
 # Задание 4
 # Для каждого класса нужно вывести количество девочек и мальчиков в нём.
@@ -73,6 +103,31 @@ is_male = {
     'Даша': False,
 }
 # ???
+
+# Объединяем учеников одного и того же класса в один общий словарь и удаляем остающийся дубль:
+
+classes = {}
+class_counter = 0
+
+for cl in school:
+    if cl['class'] in classes:
+        cl['students'] += school[classes[cl['class']]]['students']
+        del school[classes[cl['class']]]
+    else:
+        classes[cl['class']] = class_counter
+        class_counter += 1
+
+# Подсчитываем число девочек и мальчиков в каждом классе, добавляем сведения в словари и отображаем результат в консоли:
+
+for grade in school:
+    grade['boys'] = 0
+    grade['girls'] = 0
+    for student in grade['students']:
+        if is_male[student['first_name']] == True:
+            grade['boys'] += 1
+        else:
+            grade['girls'] += 1
+    print(f"Класс {grade['class']}: девочки {grade['girls']}, мальчики {grade['boys']}")
 
 
 # Задание 5
