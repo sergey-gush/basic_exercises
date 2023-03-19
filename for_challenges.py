@@ -1,9 +1,13 @@
+import re
+
 # Задание 1
 # Необходимо вывести имена всех учеников из списка с новой строки
 
 names = ['Оля', 'Петя', 'Вася', 'Маша']
 # ???
 
+for name in names:
+    print(name)
 
 # Задание 2
 # Необходимо вывести имена всех учеников из списка, рядом с именем показать количество букв в нём
@@ -13,6 +17,10 @@ names = ['Оля', 'Петя', 'Вася', 'Маша']
 
 names = ['Оля', 'Петя', 'Вася', 'Маша']
 # ???
+
+for name in names:
+    length = len(name)
+    print(f'{name}: {length}')
 
 
 # Задание 3
@@ -26,6 +34,14 @@ is_male = {
 }
 names = ['Оля', 'Петя', 'Вася', 'Маша']
 # ???
+
+for name in names:
+    if is_male[name]:
+        gender = 'муж'
+    else:
+        gender = 'жен'
+    
+    print(f'{name}: {gender}')
 
 
 # Задание 4
@@ -42,6 +58,14 @@ groups = [
 ]
 # ???
 
+total_groups = len(groups)
+
+print(f'Всего групп: {total_groups}')
+
+indexed_groups = enumerate(groups, start=1)
+
+for group in indexed_groups:
+    print(f'Группа {group[0]}: {len(group[1])} ученика')
 
 # Задание 5
 # Для каждой пары учеников нужно с новой строки перечислить учеников, которые в неё входят
@@ -55,3 +79,9 @@ groups = [
     ['Вася', 'Маша', 'Саша', 'Женя'],
 ]
 # ???
+
+indexed_groups = enumerate(groups, start=1)
+
+for group in indexed_groups:
+    members = ', '.join(group[1])
+    print(f'Группа {group[0]}: {members}')
