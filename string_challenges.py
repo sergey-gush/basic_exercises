@@ -6,7 +6,7 @@ word = 'Архангельск'
 
 length = len(word)
 
-print(word[length - 1])
+print(word[-1])
 
 # Вывести количество букв "а" в слове
 word = 'Архангельск'
@@ -25,18 +25,15 @@ word = 'Архангельск'
 
 def is_vowel_ru(letter):
     vowels = ['а', 'е', 'ё', 'и', 'о', 'у', 'э', 'ю', 'я']
-    if letter in vowels:
-        return True
-    else:
-        return False
-    
+    return letter in vowels
+        
 def vowels_cons_num_ru(word):
     letters = {'vowels': 0, 'consonants': 0}
     if not word.isalpha():
         raise ValueError('Данное значение не является словом')
     word = word.lower()
     for letter in word:
-        if is_vowel_ru(letter) == True:
+        if is_vowel_ru(letter):
             letters['vowels'] += 1
         else:
             letters['consonants'] += 1

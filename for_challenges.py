@@ -36,7 +36,7 @@ names = ['Оля', 'Петя', 'Вася', 'Маша']
 # ???
 
 for name in names:
-    if is_male[name] == True:
+    if is_male[name]:
         gender = 'муж'
     else:
         gender = 'жен'
@@ -59,13 +59,13 @@ groups = [
 # ???
 
 total_groups = len(groups)
-count = 0 
 
 print(f'Всего групп: {total_groups}')
 
-for group in groups:
-    count += 1
-    print(f'Группа {count}: {len(group)} ученика')
+indexed_groups = enumerate(groups, start=1)
+
+for group in indexed_groups:
+    print(f'Группа {group[0]}: {len(group[1])} ученика')
 
 # Задание 5
 # Для каждой пары учеников нужно с новой строки перечислить учеников, которые в неё входят
@@ -80,9 +80,8 @@ groups = [
 ]
 # ???
 
-count = 0
+indexed_groups = enumerate(groups, start=1)
 
-for group in groups:
-    count += 1
-    members = re.sub('[\[\]\']', '', str(group))
-    print(f'Группа {count}: {members}')
+for group in indexed_groups:
+    members = ', '.join(group[1])
+    print(f'Группа {group[0]}: {members}')

@@ -36,6 +36,69 @@ import datetime
 
 import lorem
 
+from collections import Counter
+import operator
+
+def most_written_by(msgs):
+    sent_by_counter = Counter(msg['sent_by'] for msg in msgs)
+    return sent_by_counter.most_common(1)[0][0]
+
+def most_replies_for(msgs):
+    replies_counter = Counter(msg['reply_for'] for msg in msgs)
+    replies_number = replies_counter.most_common(len(msgs))
+    replies_for = {}
+
+    for msg in replies_number:
+        for it in msgs:
+            if msg[0] == it['id']:
+                if it['sent_by'] not in replies_for:
+                    replies_for[it['sent_by']] = msg[1]
+                else:
+                    replies_for[it['sent_by']] += msg[1]
+                break
+    
+    return max(replies_for.items(), key=operator.itemgetter(1))[0]
+
+def most_seen(msgs):
+    seen = {}
+    
+    for msg in msgs:
+        if msg['sent_by'] not in seen:
+            seen[msg['sent_by']] = len(msg['seen_by'])
+        else:
+            seen[msg['sent_by']] += len(msg['seen_by'])
+
+    return max(seen.items(), key=operator.itemgetter(1))[0]
+
+def prime_time(msgs):
+    day_stat = {
+        'утро': 0,
+        'день': 0,
+        'вечер': 0,
+        'ночь': 0
+    }
+
+    for msg in msgs:
+        if 0 <= msg['sent_at'].hour < 6:
+            day_stat['ночь'] += 1
+        elif 6 <= msg['sent_at'].hour < 12:
+            day_stat['утро'] += 1
+        elif 12 <= msg['sent_at'].hour < 18:
+            day_stat['день'] += 1
+        else:
+            day_stat['вечер'] += 1
+
+    return max(day_stat.items(), key=operator.itemgetter(1))[0]
+
+def most_long_thread(msgs):
+    re_msgs = []
+    
+    for msg in msgs:
+        if msg['reply_for'] is not None:
+            re_msgs.append(msg)
+    
+    replies_counter = Counter(msg['reply_for'] for msg in re_msgs)
+    return replies_counter.most_common(1)[0][0]
 
 def generate_chat_history():
     messages_amount = random.randint(200, 1000)
@@ -65,6 +128,14 @@ def generate_chat_history():
         })
     return messages
 
+messages = generate_chat_history()
 
-if __name__ == "__main__":
-    print(generate_chat_history())
+print(f'Больше всего сообщений написал пользователь: {most_written_by(messages)}')
+print(f'Больше всего отвечали на сообщения пользователя: {most_replies_for(messages)}')
+print(f'Больше всего просмотров у сообщений пользователя: {most_seen(messages)}')
+print(f'Больше всего сообщений поступило за {prime_time(messages)}')
+print(f'Самый длинный тред у сообщения: {most_long_thread(messages)}')
+
+
+# if __name__ == "__main__":
+#    print(generate_chat_history())
